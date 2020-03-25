@@ -1,0 +1,4 @@
+LIBRARY HostRewriteModule  
+
+EXPORTS  
+    RegisterModule

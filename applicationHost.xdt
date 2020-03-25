@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.webServer xdt:Transform="InsertIfMissing">
+    <rewrite xdt:Transform="InsertIfMissing">
+      <allowedServerVariables xdt:Transform="Replace">
+        <add name="HTTP_X_FORWARDED_HOST" xdt:Transform="InsertIfMissing" />
+        <add name="HTTP_HOST" xdt:Transform="InsertIfMissing" />
+      </allowedServerVariables>
+    </rewrite>
+    <globalModules xdt:Transform="InsertIfMissing">
+      <add name="FrontDoorHostRewriteModule" image="D:\home\SiteExtensions\FrontDoorHostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+    </globalModules>
+  </system.webServer>
+</configuration>
+

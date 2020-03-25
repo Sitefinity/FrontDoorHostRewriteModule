@@ -1,0 +1,73 @@
+# Pipeline for producing Azure Site Extension: FrontDoorHostRewriteModule
+# https://www.nuget.org/packages/FrontDoorHostRewriteModule
+
+trigger: none
+
+variables:
+  vmImageName: 'windows-latest'
+  solution: '**/HostRewriteModule.sln'
+  buildConfiguration: 'Release'
+  major: 1
+  minor: 0
+  patch: 0
+  NugetVersion: $(major).$(minor).$(patch)
+
+stages:
+- stage: Build
+  displayName: Build stage
+
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: VSBuild@1
+      displayName: Build solution
+      inputs:
+        solution: '$(solution)'
+        platform: 'x64'
+        configuration: '$(buildConfiguration)'
+        msbuildArchitecture: 'x64'
+        createLogFile: true
+
+    - task: NuGetCommand@2
+      displayName: Create nuget package
+      inputs:
+        command: 'pack'
+        packagesToPack: '**/HostRewriteModule.nuspec'
+        packDestination: '$(Build.ArtifactStagingDirectory)/packages'
+        versioningScheme: 'byEnvVar'
+        versionEnvVar: 'NugetVersion'
+
+    - publish: $(Build.ArtifactStagingDirectory)/packages
+      artifact: packages
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: 'production'
+    pool:
+      vmImage: $(vmImageName)
+
+    strategy:
+      runOnce:
+        deploy:
+
+          steps:
+          - download: current
+            artifact: 'packages'
+
+          - task: NuGetCommand@2
+            displayName: Push nuget package
+            inputs:
+              command: 'push'
+              packagesToPush: '$(Pipeline.Workspace)/packages/*.nupkg;'
+              nuGetFeedType: 'external'
+              publishFeedCredentials: 'www.nuget.org/api/v2/'

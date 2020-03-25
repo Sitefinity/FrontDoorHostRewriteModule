@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<package>
+  <metadata>
+    <id>FrontDoorHostRewriteModule</id>
+    <title>Front Door Host Rewrite Module</title>
+    <version>1.0.0</version>
+    <authors>Progress Software Corporation</authors>
+    <licenseUrl>https://github.com/Sitefinity/FrontDoorHostRewriteModule/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/Sitefinity/FrontDoorHostRewriteModule</projectUrl>	  
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Replaces the Host header with the X-Forwarded-Host on IIS of App Service via a native C++ module. NOTE: There is a popular approach to replace the HOST header with the value of X-Forwarded-Host header by unlocking the Host and X-Forwarded-Host headers, so they can be rewritten using rewrite rules. Once the request reaches the App Service, the value of the HOST header is set to the value of the X-Forwarded-Host header. However, this approach has a pitfall. If there are other rewrite rules executed after the rule for rewriting the HOST header, they do not respect the new value of the HOST header. Using the native IIS module ensures that the HOST header has taken the value of the X-Forwarded-Host header before the rewrite module steps in.</description>
+    <tags>AzureSiteExtension x-forwarded-host host header rewrite azure front-door reverse-proxy</tags>
+    <packageTypes>
+      <packageType name="AzureSiteExtension" />
+    </packageTypes>
+  </metadata>
+  <files>
+    <file src="bin\HostRewriteModule.dll" target="Content" />
+    <file src="applicationHost.xdt" target="Content" />
+  </files>
+</package>

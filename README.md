@@ -8,7 +8,7 @@ Once installed, you will need to restart the site and the SCM site (through kudu
 
 This extension limits itself to the App Service Slot it is being installed through. The extension аdds a global native C++ module to the App Service IIS that replaces the HOST header value with the value of X-Forwarded-Host header in case it exists.
 
-The module works only for App Service configured for x64 bit platform.
+The extension works only for App Service configured for x64 bit platform.
 
 # Notes
 There is a popular approach to replace the HOST header with the value of X-Forwarded-Host header by unlocking the Host and X-Forwarded-Host headers, so they can be rewritten using rewrite rules. Once the request reaches the App Service, the value of the HOST header is set to the value of the X-Forwarded-Host header.

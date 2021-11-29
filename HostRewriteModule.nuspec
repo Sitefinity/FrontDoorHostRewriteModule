@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <package>
   <metadata>
-    <id>FrontDoorHostRewriteModule</id>
+    <id>Progress.FrontDoorHostRewriteModule</id>
     <title>Front Door Host Rewrite Module</title>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Progress Software Corporation</authors>
     <licenseUrl>https://github.com/Sitefinity/FrontDoorHostRewriteModule/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/Sitefinity/FrontDoorHostRewriteModule</projectUrl>	  

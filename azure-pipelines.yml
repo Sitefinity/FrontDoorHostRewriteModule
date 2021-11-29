@@ -1,15 +1,25 @@
 # Pipeline for producing Azure Site Extension: FrontDoorHostRewriteModule
 # https://www.nuget.org/packages/FrontDoorHostRewriteModule
 
+resources:
+  repositories:
+  - repository: sitefinity-ci
+    type: git
+    name: sitefinity-ci
+    ref: master
+
 trigger: none
 
+pool:
+  name: Sitefinity Core
+  demands: distribution-builds
+
 variables:
-  vmImageName: 'windows-latest'
-  solution: '**/HostRewriteModule.sln'
+  solution: 'FrontDoorHostRewriteModule/**/HostRewriteModule.sln'
   buildConfiguration: 'Release'
   major: 1
   minor: 0
-  patch: 0
+  patch: 1
   NugetVersion: $(major).$(minor).$(patch)
 
 stages:
@@ -19,10 +29,11 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
-      vmImage: $(vmImageName)
 
     steps:
+    - checkout: self
+    - checkout: sitefinity-ci
+    - task: NuGetToolInstaller@1
     - task: VSBuild@1
       displayName: Build solution
       inputs:
@@ -36,10 +47,21 @@ stages:
       displayName: Create nuget package
       inputs:
         command: 'pack'
-        packagesToPack: '**/HostRewriteModule.nuspec'
+        packagesToPack: 'FrontDoorHostRewriteModule/**/HostRewriteModule.nuspec'
         packDestination: '$(Build.ArtifactStagingDirectory)/packages'
         versioningScheme: 'byEnvVar'
         versionEnvVar: 'NugetVersion'
+
+    - task: PowerShell@2
+      displayName: SignNugetPackage
+      inputs:
+        targetType: inline
+        script: | 
+          . "$(Build.SourcesDirectory)\sitefinity-ci\Distribution\CommonScripts\Config.ps1"
+      
+          $env:configJson = ConvertTo-Json $mainBuildConfig -Depth 5 -Compress
+          Import-Module -Name $(Build.SourcesDirectory)\sitefinity-ci\Distribution\DistributionBuildModules\NuGetPackages.psm1 -DisableNameChecking -ArgumentList $env:configJson
+          SignNugetPackages -directory $(Build.ArtifactStagingDirectory)
 
     - publish: $(Build.ArtifactStagingDirectory)/packages
       artifact: packages
@@ -53,9 +75,7 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     environment: 'production'
-    pool:
-      vmImage: $(vmImageName)
-
+    
     strategy:
       runOnce:
         deploy:

@@ -77,7 +77,7 @@ stages:
           SignNugetPackages -directory $(Pipeline.Workspace)\unsignedPackages
 
     - publish: $(Pipeline.Workspace)/unsignedPackages
-      artifact: packages
+      artifact: signedPackages
 
 - stage: Deploy
   displayName: Deploy stage
@@ -97,12 +97,12 @@ stages:
 
           steps:
           - download: current
-            artifact: 'packages'
+            artifact: 'signedPackages'
 
           - task: NuGetCommand@2
             displayName: Push nuget package
             inputs:
               command: 'push'
-              packagesToPush: '$(Pipeline.Workspace)/packages/*.nupkg;'
+              packagesToPush: '$(Pipeline.Workspace)/signedPackages/*.nupkg;'
               nuGetFeedType: 'external'
               publishFeedCredentials: 'www.nuget.org/api/v2/'

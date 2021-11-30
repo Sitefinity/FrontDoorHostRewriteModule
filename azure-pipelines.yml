@@ -12,7 +12,7 @@ trigger: none
 
 variables:
   vmImageName: 'windows-latest'
-  solution: 'FrontDoorHostRewriteModule/**/HostRewriteModule.sln'
+  solution: '**/HostRewriteModule.sln'
   buildConfiguration: 'Release'
   major: 1
   minor: 0
@@ -44,7 +44,7 @@ stages:
       displayName: Create nuget package
       inputs:
         command: 'pack'
-        packagesToPack: 'FrontDoorHostRewriteModule/**/HostRewriteModule.nuspec'
+        packagesToPack: '**/HostRewriteModule.nuspec'
         packDestination: '$(Build.ArtifactStagingDirectory)/unsignedPackages'
         versioningScheme: 'byEnvVar'
         versionEnvVar: 'NugetVersion'
@@ -70,10 +70,10 @@ stages:
       inputs:
         targetType: inline
         script: | 
-          . "$(Build.SourcesDirectory)\sitefinity-ci\Distribution\CommonScripts\Config.ps1"
+          . "$(Build.SourcesDirectory)\Distribution\CommonScripts\Config.ps1"
       
           $env:configJson = ConvertTo-Json $mainBuildConfig -Depth 5 -Compress
-          Import-Module -Name $(Build.SourcesDirectory)\sitefinity-ci\Distribution\DistributionBuildModules\NuGetPackages.psm1 -DisableNameChecking -ArgumentList $env:configJson
+          Import-Module -Name $(Build.SourcesDirectory)\Distribution\DistributionBuildModules\NuGetPackages.psm1 -DisableNameChecking -ArgumentList $env:configJson
           SignNugetPackages -directory $(Pipeline.Workspace)\unsignedPackages
 
     - publish: $(Pipeline.Workspace)/unsignedPackages

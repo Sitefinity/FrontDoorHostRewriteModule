@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <package>
   <metadata>
-    <id>Progress.FrontDoorHostRewriteModule</id>
+    <id>Progress.Sitefinity.Cloud.FrontDoorHostRewriteModule</id>
     <title>Front Door Host Rewrite Module</title>
     <version>1.0.1</version>
     <authors>Progress Software Corporation</authors>

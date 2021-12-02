@@ -58,7 +58,9 @@ stages:
     pool:
       name: Sitefinity Core
       demands: distribution-builds
-          
+    workspace:
+      clean: all
+
     steps:
     - checkout: sitefinity-ci
 

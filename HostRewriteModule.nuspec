@@ -3,7 +3,7 @@
   <metadata>
     <id>Progress.Sitefinity.Cloud.FrontDoorHostRewriteModule</id>
     <title>Front Door Host Rewrite Module</title>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>Progress Software Corporation</authors>
     <licenseUrl>https://github.com/Sitefinity/FrontDoorHostRewriteModule/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/Sitefinity/FrontDoorHostRewriteModule</projectUrl>	  

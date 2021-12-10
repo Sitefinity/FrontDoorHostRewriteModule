@@ -8,7 +8,7 @@
       </allowedServerVariables>
     </rewrite>
     <globalModules xdt:Transform="InsertIfMissing">
-      <add name="FrontDoorHostRewriteModule" image="D:\home\SiteExtensions\FrontDoorHostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+      <add name="FrontDoorHostRewriteModule" image="D:\home\SiteExtensions\Progress.Sitefinity.Cloud.FrontDoorHostRewriteModule\HostRewriteModule.dll" preCondition="bitness64" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
     </globalModules>
   </system.webServer>
 </configuration>

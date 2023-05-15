@@ -74,11 +74,13 @@ stages:
 
     - download: current
       artifact: 'unsignedPackages'
+    
     - task: DownloadSecureFile@1
       name: SigningCertificate
       displayName: Download CA certificate
       inputs:
         secureFile: 'ProgressCodeSign.pfx'
+    
     - task: PowerShell@2
       displayName: Install CA Cert
       inputs:
@@ -87,6 +89,7 @@ stages:
           Write-Host Installing $(SigningCertificate.secureFilePath) to the trusted CA directory...
           $caSecString = ConvertTo-SecureString '$(caPwd)' -AsPlainText -Force 
           Import-PfxCertificate -FilePath $(SigningCertificate.secureFilePath) -CertStoreLocation Cert:\LocalMachine\My -Password $caSecString
+    
     - task: PowerShell@2
       displayName: SignNugetPackage
       inputs:

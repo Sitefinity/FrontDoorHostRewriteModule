@@ -1,9 +1,11 @@
 # FrontDoorHostRewriteModule (App Service extension)
 
-# Installation
+## Installation
+
 Install this extension using your App Service's SCM site.
 
-# Description
+## Description
+
 Once installed, you will need to restart the site and the SCM site (through kudu). Afterward, all requests will be rewritten so the Host header matches the X-Forwarded-Host.
 
 This extension limits itself to the App Service Slot it is being installed through. The extension аdds a global native C++ module to the App Service IIS that replaces the HOST header value with the value of X-Forwarded-Host header in case it exists.
